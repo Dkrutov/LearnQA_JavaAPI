@@ -49,5 +49,33 @@ public class HomeWorkTests {
         System.out.println(locationHeader);
     }
 
+    @Test
+    public void testLongRedirect() {
+        Response response = RestAssured
+                .given()
+                .redirects()
+                .follow(false)
+                .when()
+                .get("https://playground.learnqa.ru/api/long_redirect")
+                .andReturn();
+        String locationHeader = response.getHeader("Location");
+        int statusCode = response.getStatusCode();
+        System.out.println("\nStatusCode: " + statusCode + "\nLocation: " + locationHeader);
+        while (statusCode != 200) {
+                    response = RestAssured
+                    .given()
+                    .redirects()
+                    .follow(false)
+                    .when()
+                    .get(locationHeader)
+                    .andReturn();
+            locationHeader = response.getHeader("Location");
+            statusCode = response.getStatusCode();
+
+            System.out.println("\nStatusCode: " + statusCode + "\nLocation: " + locationHeader);
+        }
+
+    }
+
 
 }
