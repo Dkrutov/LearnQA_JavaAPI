@@ -1,4 +1,5 @@
 import  io.restassured.RestAssured;
+import io.restassured.path.json.JsonPath;
 import  io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 
@@ -7,30 +8,104 @@ import java.util.Map;
 
 public class HelloWorldTest {
     @Test
-    public void testRestAssured() {
+    public void testRestAssuredGet() {
         Map<String, String> params = new HashMap<>();
         params.put("name","John");
 
-        Response response = RestAssured
+        JsonPath response = RestAssured
                 .given()
                 .queryParams(params)
                 .get("https://playground.learnqa.ru/api/hello")
-                .andReturn();
-        response.prettyPrint();
+                .jsonPath();
+        String name = response.get("answer");
+
+        if (name == null) {
+            System.out.println("The key 'answer2' is absent");
+        } else {
+            System.out.println(name);
+        }
+
     }
 
     @Test
-    public void testHello() {
-      System.out.println("Hello from Dmitrii");
-
-    }
-
-    @Test
-    public void testGetText() {
+    public void testRestAssuredPost() {
+        Map<String,String> body = new HashMap<>();
+        body.put("param1","value1");
+        body.put("param2","value2");
         Response response = RestAssured
-                .get("https://playground.learnqa.ru/api/get_text")
+                .given()
+//                .body("{\"param1\":\"value1\",\"param2\":\"value2\"}")
+                .body(body)
+                .post("https://playground.learnqa.ru/api/check_type")
                 .andReturn();
-        response.prettyPrint();
+
+        response.print();
+
     }
+
+    @Test
+    public void testRestAssuredStatus200() {
+
+        Response response = RestAssured
+                .get("https://playground.learnqa.ru/api/check_type")
+                .andReturn();
+
+        int statusCode = response.getStatusCode();
+        System.out.println(statusCode);
+    }
+
+    @Test
+    public void testRestAssuredStatus500() {
+
+        Response response = RestAssured
+                .get("https://playground.learnqa.ru/api/get_500")
+                .andReturn();
+
+        int statusCode = response.getStatusCode();
+        System.out.println(statusCode);
+    }
+
+    @Test
+    public void testRestAssuredStatus404() {
+
+        Response response = RestAssured
+                .get("https://playground.learnqa.ru/api/something")
+                .andReturn();
+
+        int statusCode = response.getStatusCode();
+        System.out.println(statusCode);
+    }
+
+    @Test
+    public void testRestAssuredStatus300() {
+
+        Response response = RestAssured
+                .given()
+                .redirects()
+                .follow(true)
+                .when()
+                .get("https://playground.learnqa.ru/api/get_303")
+                .andReturn();
+
+        int statusCode = response.getStatusCode();
+        System.out.println(statusCode);
+    }
+
+    @Test
+    public void testRestAssuredHeaders() {
+
+        Response response = RestAssured
+                .given()
+                .redirects()
+                .follow(true)
+                .when()
+                .get("https://playground.learnqa.ru/api/get_303")
+                .andReturn();
+
+        int statusCode = response.getStatusCode();
+        System.out.println(statusCode);
+    }
+
+
 }
 
