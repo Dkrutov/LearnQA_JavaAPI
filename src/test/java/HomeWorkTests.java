@@ -3,7 +3,9 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class HomeWorkTests {
@@ -111,8 +113,6 @@ public class HomeWorkTests {
                     }
                 }
                 result = responseForStatus.get("result");
-//                token = "A";
-//                params.put("token", token);
             } else {
                 System.out.println(error);
                 break;
@@ -120,4 +120,74 @@ public class HomeWorkTests {
         }
         System.out.println("result: " + result);
     }
+
+    @Test
+    public void testSearchPassword() {
+        List<String> password = new ArrayList<>();
+        password.add("123456");
+        password.add("123456789");
+        password.add("qwerty");
+        password.add("password");
+        password.add("1234567");
+        password.add("12345678");
+        password.add("12345");
+        password.add("iloveyou");
+        password.add("111111");
+        password.add("123123");
+        password.add("abc123");
+        password.add("qwerty123");
+        password.add("1q2w3e4r");
+        password.add("qwertyuiop");
+        password.add("555555");
+        password.add("lovely");
+        password.add("7777777");
+        password.add("welcome");
+        password.add("888888");
+        password.add("princess");
+        password.add("dragon");
+        password.add("password1");
+        password.add("123qwe");
+
+        Map<String, String> data = new HashMap<>();
+        Map<String, String> cookies = new HashMap<>();
+        for (String pass : password) {
+            data.put("login", "super_admin");
+            data.put("password", pass);
+            Response responseForGet = RestAssured
+                    .given()
+                    .body(data)
+                    .when()
+                    .post("https://playground.learnqa.ru/ajax/api/get_secret_password_homework")
+                    .andReturn();
+
+            String responseCookie = responseForGet.getCookie("auth_cookie");
+//            responseForGet.prettyPrint();
+//            System.out.println(responseCookie);
+
+
+            if (responseCookie != null) {
+                cookies.put("auth_cookie", responseCookie);
+            }
+
+            Response responseForCheck = RestAssured
+                    .given()
+                    .body(data)
+                    .cookies(cookies)
+                    .when()
+                    .post("https://playground.learnqa.ru/ajax/api/check_auth_cookie")
+                    .andReturn();
+            String answer = responseForCheck.body().asString();
+            if (answer.equals("You are authorized")) {
+                System.out.println("Password: " + pass);
+                responseForCheck.print();
+            }
+
+//            if (answer.equals("You are NOT authorized")) {
+//                System.out.println("--");
+//            }
+        }
+
+    }
+
+
 }
