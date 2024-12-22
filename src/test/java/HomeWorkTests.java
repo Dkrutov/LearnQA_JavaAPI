@@ -62,7 +62,7 @@ public class HomeWorkTests {
         int statusCode = response.getStatusCode();
         System.out.println("\nStatusCode: " + statusCode + "\nLocation: " + locationHeader);
         while (statusCode != 200) {
-                    response = RestAssured
+            response = RestAssured
                     .given()
                     .redirects()
                     .follow(false)
@@ -74,8 +74,50 @@ public class HomeWorkTests {
 
             System.out.println("\nStatusCode: " + statusCode + "\nLocation: " + locationHeader);
         }
-
     }
 
+    @Test
+    public void testToken() {
+        JsonPath responseForToken = RestAssured
+                .given()
+                .get("https://playground.learnqa.ru/ajax/api/longtime_job")
+                .jsonPath();
+        String token = responseForToken.get("token");
+        int seconds = responseForToken.get("seconds");
+        System.out.println("token: " + token);
+        System.out.println("seconds: " + seconds);
 
+        Map<String, String> params = new HashMap<>();
+        params.put("token", token);
+        String result = null;
+        while (result == null) {
+            JsonPath responseForStatus = RestAssured
+                    .given()
+                    .queryParams(params)
+                    .get("https://playground.learnqa.ru/ajax/api/longtime_job")
+                    .jsonPath();
+
+            String error = responseForStatus.get("error");
+            String status = responseForStatus.get("status");
+            if (error == null) {
+                if (status.equals("Job is ready")) {
+                    System.out.println(status);
+                } else if (status.equals("Job is NOT ready")) {
+                    System.out.println(status);
+                    try {
+                        Thread.sleep(seconds * 1000L);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                result = responseForStatus.get("result");
+//                token = "A";
+//                params.put("token", token);
+            } else {
+                System.out.println(error);
+                break;
+            }
+        }
+        System.out.println("result: " + result);
+    }
 }

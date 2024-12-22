@@ -9,8 +9,30 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class HelloWorldTest {
+
     @Test
     public void testRestAssuredGet() {
+        Map<String, String> params = new HashMap<>();
+        params.put("name","John");
+
+        Response response = RestAssured
+                .given()
+                .queryParams(params)
+                .get("https://playground.learnqa.ru/api/hello")
+                .andReturn();
+        String name = response.prettyPrint();
+
+        if (name == null) {
+            System.out.println("The key 'answer2' is absent");
+        } else {
+            System.out.println(name);
+        }
+
+    }
+
+
+    @Test
+    public void testRestAssuredGetJsonPath() {
         Map<String, String> params = new HashMap<>();
         params.put("name","John");
 
