@@ -150,6 +150,8 @@ public class HomeWorkTests {
 
         Map<String, String> data = new HashMap<>();
         Map<String, String> cookies = new HashMap<>();
+        String passw = "";
+        boolean flag = false;
         for (String pass : password) {
             data.put("login", "super_admin");
             data.put("password", pass);
@@ -178,15 +180,18 @@ public class HomeWorkTests {
                     .andReturn();
             String answer = responseForCheck.body().asString();
             if (answer.equals("You are authorized")) {
-                System.out.println("Password: " + pass);
+                passw = pass;
+                flag = true;
                 responseForCheck.print();
+                break;
             }
-
-//            if (answer.equals("You are NOT authorized")) {
-//                System.out.println("--");
-//            }
         }
 
+        if (flag) {
+            System.out.println("Password: " + passw);
+        } else {
+            System.out.println("Password not found");
+        }
     }
 
 
