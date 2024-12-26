@@ -10,7 +10,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public class HelloWorldTest {
+
+    @Test
+    public void testRestAssured() {
+        Response response = RestAssured
+                .get("https://playground.learnqa.ru/api/map2")
+                .andReturn();
+//        assertTrue(response.statusCode() == 200, "Unexpected status code");
+        assertEquals(200,response.statusCode(),"Unexpected status code");
+    }
 
     @Test
     public void testRestAssuredGet() {
