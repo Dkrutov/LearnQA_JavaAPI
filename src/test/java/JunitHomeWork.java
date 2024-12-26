@@ -7,8 +7,8 @@ public class JunitHomeWork {
 
     @Test
     public void testLength() {
-        String hello = "Hello, world!!!";
-        assertTrue( hello.length() <= 15,"Unexpected length");
+        String hello = "Hello, world!!!!";
+        assertTrue( hello.length() > 15,"Unexpected length");
     }
 
 }
