@@ -11,4 +11,16 @@ public class JunitHomeWork {
         assertTrue( hello.length() > 15,"Unexpected length");
     }
 
+    @Test
+    public void testCookie() {
+
+    }
+
+    @Test
+    public void testHeader() {
+
+    }
+
+
+
 }
