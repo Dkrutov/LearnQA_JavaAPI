@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import lib.Assertions;
 
 
 import java.util.HashMap;
@@ -42,21 +43,22 @@ public class UserAuthTests extends BaseTestCase {
     @Test
     public  void  testAuthUser() {
 
-        JsonPath responseCheckAuth = RestAssured
+        Response responseCheckAuth = RestAssured
                 .given()
                 .header("x-csrf-token",this.header)
                 .cookie("auth_sid",this.cookie)
                 .get("https://playground.learnqa.ru/api/user/auth")
-                .jsonPath();
+                .andReturn();
 
-        int userIdOnCheck = responseCheckAuth.getInt("user_id");
-        assertTrue(userIdOnCheck > 0, "Unexpected user id " + userIdOnCheck);
-
-        assertEquals(
-                userIdOnAuth,
-                userIdOnCheck,
-                "user id from auth request is not equal to user_id from check request"
-        );
+//        int userIdOnCheck = responseCheckAuth.getInt("user_id");
+//        assertTrue(userIdOnCheck > 0, "Unexpected user id " + userIdOnCheck);
+//
+//        assertEquals(
+//                userIdOnAuth,
+//                userIdOnCheck,
+//                "user id from auth request is not equal to user_id from check request"
+//        );
+        Assertions.asserJsonByName(responseCheckAuth,"user_id",this.userIdOnAuth);
     }
 
     @ParameterizedTest
@@ -88,8 +90,9 @@ public class UserAuthTests extends BaseTestCase {
             throw new IllegalArgumentException("Condition value is known; " + condition);
         }
 
-        JsonPath responseForCheck = spec.get().jsonPath();
-        assertEquals(0,responseForCheck.getInt("user_id"), "user_id shouldbe 0 for unauth request");
+        Response responseForCheck = spec.get().andReturn();
+//        assertEquals(0,responseForCheck.getInt("user_id"), "user_id shouldbe 0 for unauth request");
+        Assertions.asserJsonByName(responseForCheck,"user_id",0);
 
     }
 }
