@@ -57,7 +57,7 @@ public class JunitHomeWork {
                 .headers(queryParams)
                 .get("https://playground.learnqa.ru/ajax/api/user_agent_check")
                 .jsonPath();
-//        responseUserAgentCheck.prettyPrint();
+        responseUserAgentCheck.prettyPrint();
         String deviceAct  = responseUserAgentCheck.get("device");
         String browserAct  = responseUserAgentCheck.get("browser");
         String platformAct  = responseUserAgentCheck.get("platform");
