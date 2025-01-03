@@ -45,7 +45,7 @@ public class JunitTests {
                 .get("https://playground.learnqa.ru/api/hello")
                 .jsonPath();
         String answer = response.getString("answer");
-        String expectedName = (name.length() > 0) ? name: "someone2";
+        String expectedName = (name.length() > 0) ? name: "someone";
         assertEquals("Hello, " + expectedName, answer, "The answer is not expected");
     }
 
