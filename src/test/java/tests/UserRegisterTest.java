@@ -1,10 +1,15 @@
 package tests;
 
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import lib.ApiCoreRequests;
 import lib.Assertions;
 import lib.BaseTestCase;
 import lib.DataGenerator;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -12,7 +17,11 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.util.HashMap;
 import java.util.Map;
 
+@Epic("Registration cases")
+@Feature("Registration")
 public class UserRegisterTest extends BaseTestCase {
+
+    private final ApiCoreRequests apiCoreRequests = new ApiCoreRequests();
 
     @Test
     public void testCreateUserWithExistingEmail() {
@@ -48,6 +57,8 @@ public class UserRegisterTest extends BaseTestCase {
     }
 
     @Test
+    @Description("This test checks the impossibility of registration without a symbol @")
+    @DisplayName("Test negative registration user")
     public void testCreateUserNotValidEmailAt() {
         String email = "lernqa2025010318081example.com";
         Map<String,String> userData= new HashMap<>();
@@ -57,17 +68,17 @@ public class UserRegisterTest extends BaseTestCase {
         userData.put("firstName","learnqa");
         userData.put("lastName","learnqa");
 
-        Response responseCreateAuth = RestAssured
-                .given()
-                .body(userData)
-                .post("https://playground.learnqa.ru/api/user/")
-                .andReturn();
+        Response responseCreateAuth = apiCoreRequests
+                .makePostRequest("https://playground.learnqa.ru/api/user/",userData);
+
 
         Assertions.assertResponseCodeEquals(responseCreateAuth,400);
         Assertions.assertResponseTextEquals(responseCreateAuth,"Invalid email format");
     }
 
     @Test
+    @Description("This test checks if registration is impossible if the username contains 1 character")
+    @DisplayName("Test negative registration user")
     public void testCreateUserNotValidFirstName1() {
         String email = DataGenerator.getRandomEmail();
         String username = "a";
@@ -79,17 +90,16 @@ public class UserRegisterTest extends BaseTestCase {
         userData.put("firstName","learnqa");
         userData.put("lastName","learnqa");
 
-        Response responseCreateAuth = RestAssured
-                .given()
-                .body(userData)
-                .post("https://playground.learnqa.ru/api/user/")
-                .andReturn();
+        Response responseCreateAuth = apiCoreRequests
+                .makePostRequest("https://playground.learnqa.ru/api/user/",userData);
 
         Assertions.assertResponseCodeEquals(responseCreateAuth,400);
         Assertions.assertResponseTextEquals(responseCreateAuth,"The value of 'username' field is too short");
     }
 
     @Test
+    @Description("This test checks if registration is impossible if the username contains 251 character")
+    @DisplayName("Test negative registration user")
     public void testCreateUserNotValidFirstName251() {
         String email = DataGenerator.getRandomEmail();
         String username = "qwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiopqwertyuiop1";
@@ -101,11 +111,8 @@ public class UserRegisterTest extends BaseTestCase {
         userData.put("firstName","learnqa");
         userData.put("lastName","learnqa");
 
-        Response responseCreateAuth = RestAssured
-                .given()
-                .body(userData)
-                .post("https://playground.learnqa.ru/api/user/")
-                .andReturn();
+        Response responseCreateAuth = apiCoreRequests
+                .makePostRequest("https://playground.learnqa.ru/api/user/",userData);
 
         Assertions.assertResponseCodeEquals(responseCreateAuth,400);
         Assertions.assertResponseTextEquals(responseCreateAuth,"The value of 'username' field is too long");
@@ -114,6 +121,8 @@ public class UserRegisterTest extends BaseTestCase {
 
     @ParameterizedTest
     @ValueSource(strings ={"email","password","username","firstName","lastName"})
+    @Description("This test checks if it is impossible to register without specifying one of the fields")
+    @DisplayName("Test negative registration user")
     public void testCreateUserNotValid(String name) {
         String email = DataGenerator.getRandomEmail();
 
@@ -126,11 +135,8 @@ public class UserRegisterTest extends BaseTestCase {
         userData.put("lastName","learnqa");
         userData.remove(name);
 
-        Response responseCreateAuth = RestAssured
-                .given()
-                .body(userData)
-                .post("https://playground.learnqa.ru/api/user/")
-                .andReturn();
+        Response responseCreateAuth = apiCoreRequests
+                .makePostRequest("https://playground.learnqa.ru/api/user/",userData);
 
         Assertions.assertResponseCodeEquals(responseCreateAuth,400);
         Assertions.assertResponseTextEquals(responseCreateAuth,"The following required params are missed: " + name);
