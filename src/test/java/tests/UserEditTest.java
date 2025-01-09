@@ -103,7 +103,7 @@ public class UserEditTest extends BaseTestCase {
     @Test
     @Description("Test negative edit user, if auth another user")
     @DisplayName("This test negative edit user")
-    public void testEditAuthAnotherUser() {
+    public void testEditAuthAnotherUser() throws InterruptedException {
         //GENERATE USER AUTH
         Map<String,String> userDataAuth = DataGenerator.getRegistrationData();
 
@@ -111,7 +111,8 @@ public class UserEditTest extends BaseTestCase {
                 "https://playground.learnqa.ru/api_dev/user/",
                 userDataAuth);
 
-//        System.out.println("GENERATE: " + responseCreateUserAuth.prettyPrint());
+        System.out.println("GENERATE: " + responseCreateUserAuth.prettyPrint());
+        Thread.sleep(1000);
         //GENERATE USER EDIT
         Map<String,String> userDataEdit = DataGenerator.getRegistrationData();
 
@@ -120,7 +121,7 @@ public class UserEditTest extends BaseTestCase {
                 userDataEdit);
 
         String userEditId = responseCreateUserEdit.getString("id");
-//        System.out.println("GENERATE: " + responseCreateUserEdit.prettyPrint());
+        System.out.println("GENERATE: " + responseCreateUserEdit.prettyPrint());
 
         //LOGIN
         Map<String,String> authData = new HashMap<>();

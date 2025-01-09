@@ -67,6 +67,7 @@ public class UserAuthTests extends BaseTestCase {
 //                userIdOnCheck,
 //                "user id from auth request is not equal to user_id from check request"
 //        );
+        System.out.println(responseCheckAuth.asString());
         Assertions.asserJsonByName(responseCheckAuth,"user_id",this.userIdOnAuth);
     }
     @Description("This test checks authorization status w/o sending auth cookie or token")

@@ -97,7 +97,7 @@ public class UserDeleteTest extends BaseTestCase {
     @Test
     @Description("This negative delete user")
     @DisplayName("Test negative delete user")
-    public void testDeleteUserAuthAnotherUser() {
+    public void testDeleteUserAuthAnotherUser() throws InterruptedException {
         //GENERATE USER AUTH
         Map<String,String> userDataAuth = DataGenerator.getRegistrationData();
 
@@ -106,6 +106,7 @@ public class UserDeleteTest extends BaseTestCase {
                 userDataAuth);
 
 //        System.out.println("GENERATE: " + responseCreateUserAuth.prettyPrint());
+        Thread.sleep(1000);
         //GENERATE USER DELETE
         Map<String,String> userDataDelete = DataGenerator.getRegistrationData();
 
