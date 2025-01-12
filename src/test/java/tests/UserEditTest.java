@@ -1,7 +1,5 @@
 package tests;
-import io.qameta.allure.Description;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
+import io.qameta.allure.*;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
@@ -10,6 +8,8 @@ import lib.Assertions;
 import lib.BaseTestCase;
 import lib.DataGenerator;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,6 +24,10 @@ public class UserEditTest extends BaseTestCase {
     @Test
     @Description("This test successfully edit user")
     @DisplayName("Test positive edit user")
+    @Tag(value = "Edit")
+    @Owner(value = "Крутов Дмитрий")
+    @Severity(value = SeverityLevel.BLOCKER)
+    @Link("https://allurereport.org/docs/gettingstarted-readability/#description-links-and-other-metadata")
     public void testEditJustCreatedTest() {
         //GENERATE USER
         Map<String,String> userData = DataGenerator.getRegistrationData();
