@@ -23,7 +23,7 @@ public class UserGetTest extends BaseTestCase {
     @Test
     public void testGetUserDataNotAuth() {
         Response responseUserData = RestAssured
-                .get("https://playground.learnqa.ru/api_dev/user/2")
+                .get("https://playground.learnqa.ru/" + this.getApiURL() + "/user/2")
                 .andReturn();
 
         Assertions.assertJsonHasField(responseUserData,"username");
@@ -40,7 +40,7 @@ public class UserGetTest extends BaseTestCase {
         Response responseGetAuth = RestAssured
                 .given()
                 .body(authData)
-                .post("https://playground.learnqa.ru/api_dev/user/login")
+                .post("https://playground.learnqa.ru/" + this.getApiURL() + "/user/login")
                 .andReturn();
 
         String header = this.getHeader(responseGetAuth,"x-csrf-token");
@@ -50,7 +50,7 @@ public class UserGetTest extends BaseTestCase {
                 .given()
                 .header("x-csrf-token",header)
                 .cookie("auth_sid", cookies)
-                .get("https://playground.learnqa.ru/api_dev/user/2")
+                .get("https://playground.learnqa.ru/" + this.getApiURL() + "/user/2")
                 .andReturn();
         String[] expectedFields = {"username","firstName","lastName","email"};
         Assertions.assertJsonHasFields(responseUserData,expectedFields);
@@ -64,14 +64,14 @@ public class UserGetTest extends BaseTestCase {
         authData.put("email","vinkotov@example.com");
         authData.put("password","1234");
         Response responseGetAuth = apiCoreRequests.makePostRequest(
-                "https://playground.learnqa.ru/api_dev/user/login",
+                "https://playground.learnqa.ru/" + this.getApiURL() + "/user/login",
                 authData);
 
         String header = this.getHeader(responseGetAuth,"x-csrf-token");
         String cookies = this.getCookie(responseGetAuth,"auth_sid");
 
         Response responseUserData = apiCoreRequests.makeGetRequest(
-                "https://playground.learnqa.ru/api_dev/user/3",
+                "https://playground.learnqa.ru/" + this.getApiURL() + "/user/3",
                 header,
                 cookies);
 

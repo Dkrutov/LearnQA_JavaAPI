@@ -31,13 +31,13 @@ public class UserDeleteTest extends BaseTestCase {
         authData.put("password","1234");
 
         Response responseGetAuth = apiCoreRequests.makePostRequest(
-                "https://playground.learnqa.ru/api_dev/user/login",
+                "https://playground.learnqa.ru/" + this.getApiURL() + "/user/login",
                 authData);
 //        System.out.println("LOGIN: " + responseGetAuth.asString());
 
         //DELETE
         Response responseDeleteUser = apiCoreRequests.makeDeleteRequest(
-                "https://playground.learnqa.ru/api_dev/user/2",
+                "https://playground.learnqa.ru/" + this.getApiURL() + "/user/2",
                 this.getHeader(responseGetAuth,"x-csrf-token"),
                 this.getCookie(responseGetAuth,"auth_sid"));
 //        System.out.println("DELETE: " + responseDeleteUser.asString());
@@ -45,7 +45,7 @@ public class UserDeleteTest extends BaseTestCase {
 
         //GET
         Response responseUserData = apiCoreRequests.makeGetRequest(
-                "https://playground.learnqa.ru/api_dev/user/2",
+                "https://playground.learnqa.ru/" + this.getApiURL() + "/user/2",
                 this.getHeader(responseGetAuth,"x-csrf-token"),
                 this.getCookie(responseGetAuth,"auth_sid"));
 //        System.out.println("GET: " + responseUserData.asString());
@@ -61,7 +61,7 @@ public class UserDeleteTest extends BaseTestCase {
         Map<String,String> userData = DataGenerator.getRegistrationData();
 
         JsonPath responseCreateUser = apiCoreRequests.makePostRequestJSON(
-                "https://playground.learnqa.ru/api_dev/user/",
+                "https://playground.learnqa.ru/" + this.getApiURL() + "/user/",
                 userData);
 
         String userId = responseCreateUser.getString("id");
@@ -73,20 +73,20 @@ public class UserDeleteTest extends BaseTestCase {
         authData.put("password",userData.get("password"));
 
         Response responseGetAuth = apiCoreRequests.makePostRequest(
-                "https://playground.learnqa.ru/api_dev/user/login",
+                "https://playground.learnqa.ru/" + this.getApiURL() + "/user/login",
                 authData);
 //        System.out.println("LOGIN: " + responseGetAuth.asString());
 
         //DELETE
         Response responseEditUser = apiCoreRequests.makeDeleteRequest(
-                "https://playground.learnqa.ru/api_dev/user/" + userId,
+                "https://playground.learnqa.ru/" + this.getApiURL() + "/user/" + userId,
                 this.getHeader(responseGetAuth,"x-csrf-token"),
                 this.getCookie(responseGetAuth,"auth_sid"));
 //        System.out.println("DELETE: " + responseEditUser.asString());
 
         //GET
         Response responseUserData = apiCoreRequests.makeGetRequest(
-                "https://playground.learnqa.ru/api_dev/user/" + userId,
+                "https://playground.learnqa.ru/" + this.getApiURL() + "/user/" + userId,
                 this.getHeader(responseGetAuth,"x-csrf-token"),
                 this.getCookie(responseGetAuth,"auth_sid"));
 //       System.out.println("GET: " + responseUserData.asString());
@@ -102,7 +102,7 @@ public class UserDeleteTest extends BaseTestCase {
         Map<String,String> userDataAuth = DataGenerator.getRegistrationData();
 
         JsonPath responseCreateUserAuth = apiCoreRequests.makePostRequestJSON(
-                "https://playground.learnqa.ru/api_dev/user/",
+                "https://playground.learnqa.ru/" + this.getApiURL() + "/user/",
                 userDataAuth);
 
 //        System.out.println("GENERATE: " + responseCreateUserAuth.prettyPrint());
@@ -111,7 +111,7 @@ public class UserDeleteTest extends BaseTestCase {
         Map<String,String> userDataDelete = DataGenerator.getRegistrationData();
 
         JsonPath responseCreateUserEdit = apiCoreRequests.makePostRequestJSON(
-                "https://playground.learnqa.ru/api_dev/user/",
+                "https://playground.learnqa.ru/" + this.getApiURL() + "/user/",
                 userDataDelete);
 
         String userDeleteId = responseCreateUserEdit.getString("id");
@@ -123,13 +123,13 @@ public class UserDeleteTest extends BaseTestCase {
         authData.put("password",userDataAuth.get("password"));
 
         Response responseGetAuth = apiCoreRequests.makePostRequest(
-                "https://playground.learnqa.ru/api_dev/user/login",
+                "https://playground.learnqa.ru/" + this.getApiURL() + "/user/login",
                 authData);
 //        System.out.println("LOGIN: " + responseGetAuth.asString());
 
         //DELETE
         Response responseEditUser = apiCoreRequests.makeDeleteRequest(
-                "https://playground.learnqa.ru/api_dev/user/" + userDeleteId,
+                "https://playground.learnqa.ru/" + this.getApiURL() + "/user/" + userDeleteId,
                 this.getHeader(responseGetAuth,"x-csrf-token"),
                 this.getCookie(responseGetAuth,"auth_sid"));
 //        System.out.println("DELETE: " + responseEditUser.asString());
@@ -137,7 +137,7 @@ public class UserDeleteTest extends BaseTestCase {
 
         //GET
         Response responseUserData = apiCoreRequests.makeGetRequest(
-                "https://playground.learnqa.ru/api_dev/user/" + userDeleteId,
+                "https://playground.learnqa.ru/" + this.getApiURL() + "/user/" + userDeleteId,
                 this.getHeader(responseGetAuth,"x-csrf-token"),
                 this.getCookie(responseGetAuth,"auth_sid"));
 //        System.out.println("GET: " + responseUserData.asString());

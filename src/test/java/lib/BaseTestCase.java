@@ -10,6 +10,17 @@ import static org.hamcrest.Matchers.hasKey;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BaseTestCase {
+    protected static final String ENV = System.getenv("ENV");
+    protected String getApiURL() {
+        String api ="";
+        if (ENV.equals("dev")) {
+            api = "api_dev";
+        } else if (ENV.equals("test")) {
+            api = "api";
+        }
+        return api;
+    }
+
     protected  String getHeader(Response Response,String name){
         Headers headers = Response.getHeaders();
 
@@ -28,6 +39,8 @@ public class BaseTestCase {
         Response.then().assertThat().body("$",hasKey(name));
         return Response.jsonPath().getInt(name);
     }
+
+
 
 
 }

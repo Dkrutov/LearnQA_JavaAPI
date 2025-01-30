@@ -33,7 +33,7 @@ public class UserRegisterTest extends BaseTestCase {
         Response responseCreateAuth = RestAssured
                 .given()
                 .body(userData)
-                .post("https://playground.learnqa.ru/api_dev/user/")
+                .post("https://playground.learnqa.ru/" + this.getApiURL() + "/user/")
                 .andReturn();
 
         Assertions.assertResponseCodeEquals(responseCreateAuth,400);
@@ -49,7 +49,7 @@ public class UserRegisterTest extends BaseTestCase {
         Response responseCreateAuth = RestAssured
                 .given()
                 .body(userData)
-                .post("https://playground.learnqa.ru/api_dev/user/")
+                .post("https://playground.learnqa.ru/" + this.getApiURL() + "/user/")
                 .andReturn();
 
         Assertions.assertResponseCodeEquals(responseCreateAuth,200);
@@ -69,7 +69,7 @@ public class UserRegisterTest extends BaseTestCase {
         userData.put("lastName","learnqa");
 
         Response responseCreateAuth = apiCoreRequests
-                .makePostRequest("https://playground.learnqa.ru/api_dev/user/",userData);
+                .makePostRequest("https://playground.learnqa.ru/" + this.getApiURL() + "/user/",userData);
 
 
         Assertions.assertResponseCodeEquals(responseCreateAuth,400);
@@ -91,7 +91,7 @@ public class UserRegisterTest extends BaseTestCase {
         userData.put("lastName","learnqa");
 
         Response responseCreateAuth = apiCoreRequests
-                .makePostRequest("https://playground.learnqa.ru/api_dev/user/",userData);
+                .makePostRequest("https://playground.learnqa.ru/" + this.getApiURL() + "/user/",userData);
 
         Assertions.assertResponseCodeEquals(responseCreateAuth,400);
         Assertions.assertResponseTextEquals(responseCreateAuth,"The value of 'username' field is too short");
@@ -112,7 +112,7 @@ public class UserRegisterTest extends BaseTestCase {
         userData.put("lastName","learnqa");
 
         Response responseCreateAuth = apiCoreRequests
-                .makePostRequest("https://playground.learnqa.ru/api_dev/user/",userData);
+                .makePostRequest("https://playground.learnqa.ru/" + this.getApiURL() + "/user/",userData);
 
         Assertions.assertResponseCodeEquals(responseCreateAuth,400);
         Assertions.assertResponseTextEquals(responseCreateAuth,"The value of 'username' field is too long");
@@ -136,7 +136,7 @@ public class UserRegisterTest extends BaseTestCase {
         userData.remove(name);
 
         Response responseCreateAuth = apiCoreRequests
-                .makePostRequest("https://playground.learnqa.ru/api_dev/user/",userData);
+                .makePostRequest("https://playground.learnqa.ru/" + this.getApiURL() + "/user/",userData);
 
         Assertions.assertResponseCodeEquals(responseCreateAuth,400);
         Assertions.assertResponseTextEquals(responseCreateAuth,"The following required params are missed: " + name);
