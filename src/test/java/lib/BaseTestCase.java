@@ -13,6 +13,7 @@ public class BaseTestCase {
     protected static final String ENV = System.getenv("ENV");
     protected String getApiURL() {
         String api ="";
+
         if (ENV.equals("dev")) {
             api = "api_dev";
         } else if (ENV.equals("test")) {
